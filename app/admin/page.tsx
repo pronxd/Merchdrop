@@ -2,17 +2,25 @@
 
 import { signIn, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
+import Script from "next/script";
 
 export default function AdminSignIn() {
   const { data: session, status } = useSession();
   const router = useRouter();
+  const bgRef = useRef<HTMLDivElement>(null);
 
   useEffect(() => {
     if (status === "authenticated") {
       router.push("/admin/dashboard");
     }
   }, [status, router]);
+
+  const handleUnicornLoad = () => {
+    if (typeof window !== "undefined" && (window as any).UnicornStudio) {
+      (window as any).UnicornStudio.init();
+    }
+  };
 
   const handleGoogleSignIn = () => {
     signIn("google", { callbackUrl: "/admin/dashboard" });
@@ -31,7 +39,19 @@ export default function AdminSignIn() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-black">
+    <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
+      {/* UnicornStudio Background */}
+      <div
+        ref={bgRef}
+        data-us-project="8ZSdWfXPVCRvLBrGwzX1"
+        className="absolute inset-0 w-full h-full"
+        style={{ zIndex: 0 }}
+      />
+      <Script
+        src="https://cdn.jsdelivr.net/gh/hiunicornstudio/unicornstudio.js@v2.0.4/dist/unicornStudio.umd.js"
+        strategy="afterInteractive"
+        onLoad={handleUnicornLoad}
+      />
       <div className="relative z-10 w-full max-w-sm mx-4 animate-fade-in-up">
         <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 md:p-8">
           {/* Logo */}
@@ -117,10 +137,6 @@ export default function AdminSignIn() {
             Email sign-in disabled
           </p>
         </div>
-
-        <p className="text-center font-inter text-neutral-500 text-sm mt-6">
-          Admin access only
-        </p>
       </div>
     </div>
   );

@@ -19,7 +19,7 @@ export default function Hero() {
       >
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src="https://merch.b-cdn.net/JWzEk_7wjzTLJsfHqxjIk_Py6kCNAv.png"
+          src="https://merch.b-cdn.net/45mkpgrrAUBiQwHzHeOI2_76fd89a356ce48f2923499746957fc58.png"
           alt="Hero background"
           className="hidden sm:block w-full h-full object-cover"
         />

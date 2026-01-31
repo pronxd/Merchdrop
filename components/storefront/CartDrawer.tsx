@@ -89,71 +89,79 @@ export default function CartDrawer() {
             </div>
           ) : (
             <div className="space-y-6">
-              {items.map((item) => (
-                <div
-                  key={item.id}
-                  className="flex gap-4 pb-6 border-b border-white/10"
-                >
-                  {/* Product Image */}
-                  <div className="w-24 h-24 flex-shrink-0 bg-neutral-900 overflow-hidden">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={item.image}
-                      alt={item.name}
-                      className="w-full h-full object-cover"
-                    />
-                  </div>
+              {items.map((item) => {
+                const cartKey = item.selectedSize ? `${item.id}_${item.selectedSize}` : item.id;
+                return (
+                  <div
+                    key={cartKey}
+                    className="flex gap-4 pb-6 border-b border-white/10"
+                  >
+                    {/* Product Image */}
+                    <div className="w-24 h-24 flex-shrink-0 bg-neutral-900 overflow-hidden">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={item.image}
+                        alt={item.name}
+                        className="w-full h-full object-cover"
+                      />
+                    </div>
 
-                  {/* Product Details */}
-                  <div className="flex-1 min-w-0">
-                    <h3 className="text-white font-medium line-clamp-2">
-                      {item.name}
-                    </h3>
-                    <p className="text-white/60 text-sm mt-1">
-                      ${item.price}
-                    </p>
+                    {/* Product Details */}
+                    <div className="flex-1 min-w-0">
+                      <h3 className="text-white font-medium line-clamp-2">
+                        {item.name}
+                      </h3>
+                      {item.selectedSize && (
+                        <p className="text-white/40 text-xs mt-0.5">
+                          Size: {item.selectedSize}
+                        </p>
+                      )}
+                      <p className="text-white/60 text-sm mt-1">
+                        ${item.price}
+                      </p>
 
-                    {/* Quantity Controls */}
-                    <div className="flex items-center gap-3 mt-3">
-                      <div className="flex items-center border border-white/20">
+                      {/* Quantity Controls */}
+                      <div className="flex items-center gap-3 mt-3">
+                        <div className="flex items-center border border-white/20">
+                          <button
+                            onClick={() =>
+                              updateQuantity(cartKey, item.quantity - 1)
+                            }
+                            className="p-2 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                          >
+                            <Minus className="w-4 h-4" />
+                          </button>
+                          <span className="w-10 text-center text-white text-sm">
+                            {item.quantity}
+                          </span>
+                          <button
+                            onClick={() =>
+                              updateQuantity(cartKey, item.quantity + 1)
+                            }
+                            className="p-2 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                          >
+                            <Plus className="w-4 h-4" />
+                          </button>
+                        </div>
+
                         <button
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity - 1)
-                          }
-                          className="p-2 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
+                          onClick={() => removeItem(cartKey)}
+                          className="text-white/40 hover:text-red-500 transition-colors text-sm"
                         >
-                          <Minus className="w-4 h-4" />
-                        </button>
-                        <span className="w-10 text-center text-white text-sm">
-                          {item.quantity}
-                        </span>
-                        <button
-                          onClick={() =>
-                            updateQuantity(item.id, item.quantity + 1)
-                          }
-                          className="p-2 text-white/60 hover:text-white hover:bg-white/10 transition-colors"
-                        >
-                          <Plus className="w-4 h-4" />
+                          Remove
                         </button>
                       </div>
+                    </div>
 
-                      <button
-                        onClick={() => removeItem(item.id)}
-                        className="text-white/40 hover:text-red-500 transition-colors text-sm"
-                      >
-                        Remove
-                      </button>
+                    {/* Item Total */}
+                    <div className="text-right">
+                      <p className="text-white font-medium">
+                        ${(item.price * item.quantity).toFixed(2)}
+                      </p>
                     </div>
                   </div>
-
-                  {/* Item Total */}
-                  <div className="text-right">
-                    <p className="text-white font-medium">
-                      ${(item.price * item.quantity).toFixed(2)}
-                    </p>
-                  </div>
-                </div>
-              ))}
+                );
+              })}
             </div>
           )}
         </div>

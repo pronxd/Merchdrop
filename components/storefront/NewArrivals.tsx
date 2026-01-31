@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import Link from "next/link";
 import { useProducts } from "@/context/ProductsContext";
 import { useStorefrontCart } from "@/context/StorefrontCartContext";
 import type { StorefrontProduct } from "@/types/storefront";
@@ -24,6 +26,9 @@ export default function NewArrivals() {
       price: firstSize?.price || 0,
       image: thumbnailUrl,
       soldOut: p.soldOut || false,
+      sizes: p.sizes?.length > 1
+        ? p.sizes.map((s: any) => ({ size: s.size, price: s.price }))
+        : undefined,
     };
   });
 
@@ -58,7 +63,7 @@ export default function NewArrivals() {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={() => addItem(product)}
+                onAddToCart={(size?: string) => addItem(product, size)}
               />
             ))}
           </div>
@@ -77,20 +82,42 @@ export default function NewArrivals() {
 
 interface ProductCardProps {
   product: StorefrontProduct;
-  onAddToCart: () => void;
+  onAddToCart: (size?: string) => void;
 }
 
 function ProductCard({ product, onAddToCart }: ProductCardProps) {
+  const hasSizes = product.sizes && product.sizes.length > 0;
+  const [selectedSize, setSelectedSize] = useState<string | null>(
+    hasSizes ? null : null
+  );
+  const [showSizePicker, setShowSizePicker] = useState(false);
+
+  const displayPrice = selectedSize && product.sizes
+    ? product.sizes.find((s) => s.size === selectedSize)?.price ?? product.price
+    : product.price;
+
+  const handleAddToCart = () => {
+    if (hasSizes && !selectedSize) {
+      setShowSizePicker(true);
+      return;
+    }
+    onAddToCart(selectedSize ?? undefined);
+    setSelectedSize(null);
+    setShowSizePicker(false);
+  };
+
   return (
     <div className="group relative">
       {/* Image Container */}
       <div className="relative aspect-[3/4] overflow-hidden bg-neutral-900">
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={product.image}
-          alt={product.name}
-          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-        />
+        <Link href={`/product/${product.id}`}>
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src={product.image}
+            alt={product.name}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+        </Link>
 
         {/* Sold Out Badge */}
         {product.soldOut && (
@@ -101,10 +128,39 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
           </div>
         )}
 
+        {/* Size Picker Overlay */}
+        {showSizePicker && hasSizes && !product.soldOut && (
+          <div className="absolute inset-0 bg-black/80 flex flex-col items-center justify-center gap-2 p-4 animate-fade-in">
+            <p className="text-white text-xs font-medium tracking-wider mb-1">SELECT SIZE</p>
+            <div className="flex flex-wrap justify-center gap-2">
+              {product.sizes!.map((s) => (
+                <button
+                  key={s.size}
+                  onClick={() => {
+                    setSelectedSize(s.size);
+                    onAddToCart(s.size);
+                    setSelectedSize(null);
+                    setShowSizePicker(false);
+                  }}
+                  className="border border-white/30 text-white px-3 py-1.5 text-xs font-medium tracking-wider hover:bg-red-600 hover:border-red-600 transition-colors"
+                >
+                  {s.size}
+                </button>
+              ))}
+            </div>
+            <button
+              onClick={() => setShowSizePicker(false)}
+              className="text-white/40 text-xs mt-2 hover:text-white transition-colors"
+            >
+              Cancel
+            </button>
+          </div>
+        )}
+
         {/* Quick Add Button */}
-        {!product.soldOut && (
+        {!product.soldOut && !showSizePicker && (
           <button
-            onClick={onAddToCart}
+            onClick={handleAddToCart}
             className="absolute bottom-0 left-0 right-0 bg-red-600 text-white py-3 text-sm font-medium tracking-wider opacity-0 translate-y-full group-hover:opacity-100 group-hover:translate-y-0 transition-all duration-300 hover:bg-red-700"
           >
             ADD TO CART
@@ -114,11 +170,11 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
 
       {/* Product Info */}
       <div className="mt-4 text-center">
-        <span className="text-white text-sm font-medium hover:text-red-500 transition-colors line-clamp-2">
+        <Link href={`/product/${product.id}`} className="text-white text-sm font-medium hover:text-red-500 transition-colors line-clamp-2">
           {product.name}
-        </span>
+        </Link>
         <p className="text-white/60 text-sm mt-1">Regular price</p>
-        <p className="text-white font-medium">${product.price}</p>
+        <p className="text-white font-medium">${displayPrice}</p>
       </div>
     </div>
   );

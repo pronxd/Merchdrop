@@ -1,3 +1,8 @@
+export interface ProductSize {
+  size: string;
+  price: number;
+}
+
 export interface StorefrontProduct {
   id: string;
   name: string;
@@ -5,10 +10,12 @@ export interface StorefrontProduct {
   price: number;
   image: string;
   soldOut?: boolean;
+  sizes?: ProductSize[];
 }
 
 export interface CartItem extends StorefrontProduct {
   quantity: number;
+  selectedSize?: string;
 }
 
 export interface YouTubeVideo {

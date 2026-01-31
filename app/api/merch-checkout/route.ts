@@ -17,6 +17,7 @@ interface CheckoutItem {
   price: number;
   quantity: number;
   image: string;
+  selectedSize?: string;
 }
 
 export async function POST(req: NextRequest) {
@@ -37,7 +38,7 @@ export async function POST(req: NextRequest) {
         price_data: {
           currency: "usd",
           product_data: {
-            name: item.name,
+            name: item.selectedSize ? `${item.name} - ${item.selectedSize}` : item.name,
             images: item.image.startsWith("http")
               ? [item.image]
               : [`${baseUrl}${item.image}`],
