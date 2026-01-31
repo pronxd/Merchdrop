@@ -2,27 +2,14 @@ import { MetadataRoute } from 'next'
 import { getCollection } from '@/lib/mongodb'
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
-  const baseUrl = 'https://kassycakes.com'
+  const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://merchdrop.com'
 
-  // Static pages
   const staticPages: MetadataRoute.Sitemap = [
     {
       url: baseUrl,
       lastModified: new Date(),
       changeFrequency: 'weekly',
       priority: 1,
-    },
-    {
-      url: `${baseUrl}/cakes`,
-      lastModified: new Date(),
-      changeFrequency: 'weekly',
-      priority: 0.9,
-    },
-    {
-      url: `${baseUrl}/contact`,
-      lastModified: new Date(),
-      changeFrequency: 'monthly',
-      priority: 0.7,
     },
     {
       url: `${baseUrl}/blog`,
@@ -32,7 +19,6 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     },
   ]
 
-  // Fetch blog posts from MongoDB
   let blogPages: MetadataRoute.Sitemap = []
   try {
     const collection = await getCollection('blog_posts')

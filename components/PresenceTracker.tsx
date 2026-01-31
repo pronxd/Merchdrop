@@ -9,16 +9,17 @@ export default function PresenceTracker() {
 
   useEffect(() => {
     // Don't track admin pages
-    if (pathname?.startsWith('/kassyadmin') || pathname?.startsWith('/kassycakes')) {
+    if (pathname?.startsWith('/admin')) {
       return;
     }
 
     // Only track on production domains
     if (typeof window !== 'undefined') {
       const hostname = window.location.hostname;
-      const isProd =
-        hostname === 'kassycakes.com' ||
-        hostname === 'www.kassycakes.com';
+      const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || '';
+      let prodDomain = '';
+      try { prodDomain = baseUrl ? new URL(baseUrl).hostname : ''; } catch {}
+      const isProd = prodDomain ? (hostname === prodDomain || hostname === `www.${prodDomain}`) : false;
 
       if (!isProd) {
         return;

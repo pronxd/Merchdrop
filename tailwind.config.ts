@@ -8,16 +8,9 @@ const config: Config = {
   ],
   theme: {
     extend: {
-      colors: {
-        kassyPink: '#ff94b3',
-        baroqueGold: '#d4af37',
-        creamWhite: '#faf7f2',
-        deepBurgundy: '#6b2737',
-      },
       fontFamily: {
-        playfair: ['Playfair Display', 'serif'],
-        cormorant: ['Cormorant Garamond', 'serif'],
-        cursive: ['Brother Signature', 'cursive'],
+        oswald: ['Oswald', 'sans-serif'],
+        inter: ['Inter', 'sans-serif'],
       },
     },
   },

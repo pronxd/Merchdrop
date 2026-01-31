@@ -82,7 +82,7 @@ export default function BlogManager() {
   if (loading) {
     return (
       <div className="flex items-center justify-center h-64">
-        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-pink-500"></div>
+        <div className="animate-spin rounded-full h-12 w-12 border-t-2 border-b-2 border-red-500"></div>
       </div>
     );
   }
@@ -123,7 +123,7 @@ export default function BlogManager() {
           </a>
           <button
             onClick={handleNewPost}
-            className="px-4 sm:px-6 py-2 sm:py-3 bg-pink-500 text-white rounded-lg hover:bg-pink-600 transition-colors font-medium text-sm sm:text-base flex items-center gap-2"
+            className="px-4 sm:px-6 py-2 sm:py-3 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors font-medium text-sm sm:text-base flex items-center gap-2"
           >
             <svg xmlns="http://www.w3.org/2000/svg" height="20" viewBox="0 -960 960 960" width="20" fill="currentColor">
               <path d="M440-440H200v-80h240v-240h80v240h240v80H520v240h-80v-240Z"/>
@@ -143,7 +143,7 @@ export default function BlogManager() {
           <p className="text-gray-500 mb-4">Create your first post to get started</p>
           <button
             onClick={handleNewPost}
-            className="px-6 py-2 bg-pink-500 hover:bg-pink-600 text-white rounded-lg font-medium transition-colors"
+            className="px-6 py-2 bg-red-500 hover:bg-red-600 text-white rounded-lg font-medium transition-colors"
           >
             Create First Post
           </button>
@@ -529,8 +529,8 @@ function BlogForm({ post, onClose, onSuccess }: {
             <label
               className={`block w-full px-6 py-4 border-2 border-dashed rounded-lg text-center cursor-pointer transition-colors ${
                 isDraggingOver
-                  ? 'border-pink-500 bg-pink-900/20'
-                  : 'border-zinc-700 hover:border-pink-500'
+                  ? 'border-red-500 bg-red-900/20'
+                  : 'border-zinc-700 hover:border-red-500'
               }`}
               onDragOver={handleDragOver}
               onDragLeave={handleDragLeave}
@@ -546,7 +546,7 @@ function BlogForm({ post, onClose, onSuccess }: {
               <div className="text-gray-400 pointer-events-none">
                 {uploading ? (
                   <div className="flex items-center justify-center gap-2">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-500"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-red-500"></div>
                     <span>Uploading...</span>
                   </div>
                 ) : (
@@ -591,7 +591,7 @@ function BlogForm({ post, onClose, onSuccess }: {
           </p>
 
           <div className="mb-4">
-            <label className="block w-full px-6 py-4 border-2 border-dashed border-zinc-700 hover:border-pink-500 rounded-lg text-center cursor-pointer transition-colors">
+            <label className="block w-full px-6 py-4 border-2 border-dashed border-zinc-700 hover:border-red-500 rounded-lg text-center cursor-pointer transition-colors">
               <input
                 type="file"
                 accept="audio/*"
@@ -602,7 +602,7 @@ function BlogForm({ post, onClose, onSuccess }: {
               <div className="text-gray-400">
                 {uploadingAudio ? (
                   <div className="flex items-center justify-center gap-2">
-                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-pink-500"></div>
+                    <div className="animate-spin rounded-full h-5 w-5 border-b-2 border-red-500"></div>
                     <span>Uploading audio...</span>
                   </div>
                 ) : (
@@ -621,7 +621,7 @@ function BlogForm({ post, onClose, onSuccess }: {
             <div className="bg-zinc-800 rounded-lg p-4">
               <div className="flex items-center justify-between gap-4">
                 <div className="flex items-center gap-3 flex-1 min-w-0">
-                  <div className="w-10 h-10 rounded-full bg-pink-500 flex items-center justify-center flex-shrink-0">
+                  <div className="w-10 h-10 rounded-full bg-red-500 flex items-center justify-center flex-shrink-0">
                     <svg className="w-5 h-5 text-white" fill="currentColor" viewBox="0 0 24 24">
                       <path d="M9 19V6l12-3v13M9 19c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zm12-3c0 1.105-1.343 2-3 2s-3-.895-3-2 1.343-2 3-2 3 .895 3 2zM9 10l12-3" />
                     </svg>
@@ -661,7 +661,7 @@ function BlogForm({ post, onClose, onSuccess }: {
                 required
                 value={formData.title}
                 onChange={(e) => setFormData({ ...formData, title: e.target.value })}
-                className="w-full px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                 placeholder="Enter post title..."
               />
             </div>
@@ -674,7 +674,7 @@ function BlogForm({ post, onClose, onSuccess }: {
                 type="text"
                 value={formData.subtitle}
                 onChange={(e) => setFormData({ ...formData, subtitle: e.target.value })}
-                className="w-full px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                 placeholder="e.g., January 2024"
               />
             </div>
@@ -687,7 +687,7 @@ function BlogForm({ post, onClose, onSuccess }: {
                 type="text"
                 value={formData.date}
                 onChange={(e) => setFormData({ ...formData, date: e.target.value })}
-                className="w-full px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-pink-500 focus:outline-none"
+                className="w-full px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-red-500 focus:outline-none"
                 placeholder="e.g., January 2024"
               />
             </div>
@@ -701,7 +701,7 @@ function BlogForm({ post, onClose, onSuccess }: {
             <button
               type="button"
               onClick={addParagraph}
-              className="px-4 py-2 bg-pink-500 text-white rounded-lg hover:bg-pink-600 text-sm"
+              className="px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 text-sm"
             >
               + Add Paragraph
             </button>
@@ -718,7 +718,7 @@ function BlogForm({ post, onClose, onSuccess }: {
                     value={paragraph}
                     onChange={(e) => updateParagraph(index, e.target.value)}
                     rows={4}
-                    className="flex-1 px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-pink-500 focus:outline-none resize-none"
+                    className="flex-1 px-4 py-2 border border-zinc-700 rounded-lg bg-zinc-800 text-white focus:ring-2 focus:ring-red-500 focus:outline-none resize-none"
                     placeholder="Write your paragraph here..."
                   />
                   {paragraphs.length > 1 && (
@@ -771,7 +771,7 @@ function BlogForm({ post, onClose, onSuccess }: {
               <button
                 type="submit"
                 disabled={saving}
-                className="px-6 py-3 bg-pink-500 hover:bg-pink-600 disabled:bg-pink-500/50 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
+                className="px-6 py-3 bg-red-500 hover:bg-red-600 disabled:bg-red-500/50 text-white rounded-lg font-medium transition-colors flex items-center gap-2"
               >
                 {saving ? (
                   <>

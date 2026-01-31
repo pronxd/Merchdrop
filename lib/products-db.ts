@@ -35,14 +35,12 @@ export interface ProductDB {
   _id?: ObjectId;
   name: string;
   slug: string; // URL-friendly version of name
-  category: 'lunchbox' | 'mini' | 'circle' | 'heart' | 'chrome' | 'cupcakes' | 'bento' | 'tier' | 'specialty';
-  productType: 'custom' | 'signature'; // Custom (Circle/Heart) vs Signature cakes
+  category: string;
 
   // Pricing - support for multiple sizes
   sizes: Array<{
-    size: string; // e.g., "6\"", "8\""
+    size: string; // e.g., "S", "M", "L", "XL"
     price: number;
-    servings?: string; // e.g., "8-12 people"
   }>;
 
   // Media
@@ -51,22 +49,8 @@ export interface ProductDB {
   // Color variants - photos/videos for different color options
   colorVariants?: ColorVariant[];
 
-  // Design variants - different cake designs (e.g., different small cake designs in a group)
+  // Design variants - different product designs
   designVariants?: DesignVariant[];
-
-  // Per-product option controls (null/undefined = all options available)
-  availableFlavors?: string[] | null;    // Array of flavor IDs, null = all, [] = none
-  availableFillings?: string[] | null;   // Array of filling IDs
-  availableAddOns?: string[] | null;     // Array of add-on IDs
-
-  // Section visibility controls (default true if undefined)
-  showFlavorSection?: boolean;
-  showFillingSection?: boolean;
-  showAddOnsSection?: boolean;
-  showShapeSection?: boolean;
-
-  // Per-product shape controls
-  availableShapes?: ('heart' | 'circle')[] | null;  // Array of shapes, null = all, [] = none
 
   // Descriptions
   tagline?: string; // Short tagline for website display
@@ -81,9 +65,6 @@ export interface ProductDB {
     style?: string[];
     elements?: string[];
   };
-
-  // Shape for custom cakes
-  shape?: 'circle' | 'heart';
 
   // Visibility
   hidden: boolean; // Hide instead of delete
@@ -306,8 +287,8 @@ export async function deleteProduct(id: string): Promise<{ success: boolean; err
       for (const mediaItem of product.media) {
         try {
           // Extract path from CDN URL
-          // Example: https://kassy.b-cdn.net/cakes/subfolder/image.jpg -> /cakes/subfolder/image.jpg
-          const cdnUrl = process.env.BUNNY_CDN_URL || 'https://kassy.b-cdn.net';
+          // Example: https://merchdrop.b-cdn.net/products/subfolder/image.jpg -> /products/subfolder/image.jpg
+          const cdnUrl = process.env.BUNNY_CDN_URL || 'https://merchdrop.b-cdn.net';
           const path = '/' + mediaItem.url.replace(`${cdnUrl}/`, '');
 
           console.log(`🗑️  Deleting from Bunny: ${path}`);

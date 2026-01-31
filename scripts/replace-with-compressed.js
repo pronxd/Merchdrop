@@ -21,7 +21,7 @@ const BUNNY_STORAGE_ZONE = process.env.BUNNY_STORAGE_ZONE;
 const BUNNY_HOSTNAME = process.env.BUNNY_HOSTNAME;
 
 // Configuration
-const FOLDER_TO_PROCESS = 'cakes';
+const FOLDER_TO_PROCESS = 'products';
 const COMPRESSED_DIR = path.join(__dirname, '../downloads/compressed');
 
 /**

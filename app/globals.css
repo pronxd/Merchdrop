@@ -2,16 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom Font */
-@font-face {
-  font-family: 'Brother Signature';
-  src: url('/fonts/BrotherSignature-7BWnK.otf') format('opentype');
-  font-weight: normal;
-  font-style: normal;
-  font-display: swap;
-}
-
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800&family=Cormorant+Garamond:wght@300;400;500;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Oswald:wght@300;400;500;600;700&family=Inter:wght@300;400;500;600;700&display=swap');
 
 @layer base {
   html {
@@ -22,14 +13,16 @@
   }
 
   body {
-    @apply bg-creamWhite text-deepBurgundy;
-    font-family: 'Cormorant Garamond', serif;
+    @apply bg-black text-white;
+    font-family: 'Inter', sans-serif;
     touch-action: manipulation;
     -webkit-text-size-adjust: 100%;
   }
 
   h1, h2, h3, h4, h5, h6 {
-    font-family: 'Playfair Display', serif;
+    font-family: 'Oswald', sans-serif;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
   }
 }
 
@@ -87,16 +80,43 @@
 }
 
 ::-webkit-scrollbar-track {
-  background: #faf7f2;
+  background: #000;
 }
 
 ::-webkit-scrollbar-thumb {
-  background: #ff94b3;
+  background: #333;
   border-radius: 6px;
 }
 
 ::-webkit-scrollbar-thumb:hover {
-  background: #d4af37;
+  background: #555;
+}
+
+/* Cart slide animations */
+@keyframes slideIn {
+  from {
+    transform: translateX(100%);
+  }
+  to {
+    transform: translateX(0);
+  }
+}
+
+@keyframes slideOut {
+  from {
+    transform: translateX(0);
+  }
+  to {
+    transform: translateX(100%);
+  }
+}
+
+.cart-slide-enter {
+  animation: slideIn 0.3s ease-out forwards;
+}
+
+.cart-slide-exit {
+  animation: slideOut 0.3s ease-in forwards;
 }
 
 /* Animations */

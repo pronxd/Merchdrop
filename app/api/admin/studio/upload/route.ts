@@ -78,7 +78,7 @@ export async function POST(req: NextRequest) {
     const fileName = `${timestamp}.${extension}`;
     const isVideo = file.type.startsWith('video/');
 
-    // Upload to Bunny CDN - Cakes-All folder
+    // Upload to Bunny CDN - Studio folder
     const BUNNY_STORAGE_ZONE = process.env.BUNNY_STORAGE_ZONE;
     const BUNNY_ACCESS_KEY = process.env.BUNNY_ACCESS_KEY;
     const BUNNY_HOSTNAME = process.env.BUNNY_HOSTNAME;
@@ -91,8 +91,8 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // Save to /Cakes-All/ folder (import library)
-    const path = `/Cakes-All/${fileName}`;
+    // Save to /Studio/ folder (import library)
+    const path = `/Studio/${fileName}`;
     const uploadUrl = `https://${BUNNY_HOSTNAME}/${BUNNY_STORAGE_ZONE}${path}`;
 
     console.log(`📁 Uploading to: ${path}`);

@@ -70,8 +70,8 @@ export const authOptions: NextAuthOptions = {
     },
   },
   pages: {
-    signIn: "/kassycakes",
-    error: "/kassycakes",
+    signIn: "/admin",
+    error: "/admin",
   },
   session: {
     strategy: "jwt",

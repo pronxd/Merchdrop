@@ -17,7 +17,7 @@ import * as readline from 'readline';
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const DB_NAME = process.env.MONGODB_DB || 'kassycakes';
+const DB_NAME = process.env.MONGODB_DB;
 
 async function askConfirmation(question: string): Promise<boolean> {
   const rl = readline.createInterface({
@@ -36,6 +36,11 @@ async function askConfirmation(question: string): Promise<boolean> {
 async function restoreDatabase() {
   if (!MONGODB_URI) {
     console.error('❌ MONGODB_URI not found in .env.local');
+    process.exit(1);
+  }
+
+  if (!DB_NAME) {
+    console.error('❌ MONGODB_DB not found in .env.local');
     process.exit(1);
   }
 

@@ -173,7 +173,7 @@ export async function POST(request: NextRequest) {
     }
     const prevDateRangeStr = `${formatDate(prevStartDate)} - ${formatDate(prevEndDate)}`;
 
-    const systemPrompt = `Generate a concise, data-focused analytics report. NO fluff, NO conversational tone, NO emojis, NO "Hey Kassy", NO cheerleading. Just clean data and brief insights.
+    const systemPrompt = `Generate a concise, data-focused analytics report. NO fluff, NO conversational tone, NO emojis, NO greetings, NO cheerleading. Just clean data and brief insights.
 
 STYLE:
 - Bullet points only
@@ -211,7 +211,7 @@ FORMAT:
 [3-4 specific actions, no fluff]`;
 
     // Format all analytics data comprehensively
-    const userPrompt = `Generate a comprehensive analytics report for Kassy's cake business.
+    const userPrompt = `Generate a comprehensive analytics report for this online store.
 
 **TIME PERIOD:** ${dateRangeLabel} (${dateRangeStr})
 
@@ -240,7 +240,7 @@ TOP COUNTRIES (Remember: Only US/Texas visitors can order!)
 ${analyticsData.countries?.slice(0, 10).map((c: any, i: number) => `${i + 1}. ${c.countryFlag || ''} ${c.country}: ${c.visitors} visitors ${c.country !== 'US' ? '(CANNOT ORDER - outside delivery area)' : ''}`).join('\n') || 'No country data available'}
 
 ═══════════════════════════════════════════════════════
-TOP CITIES (Kassy delivers within 50mi of Kyle, TX only!)
+TOP CITIES (delivery within 50mi of Kyle, TX only!)
 ═══════════════════════════════════════════════════════
 Local Austin Metro (CAN ORDER):
 ${(() => {
@@ -264,7 +264,7 @@ DEVICE BREAKDOWN
 • Tablet: ${analyticsData.devices?.tablet || 0} visitors (${analyticsData.devices ? ((analyticsData.devices.tablet / (analyticsData.devices.desktop + analyticsData.devices.mobile + analyticsData.devices.tablet || 1)) * 100).toFixed(1) : 0}%)
 
 ═══════════════════════════════════════════════════════
-TRENDING CAKES (Most Viewed Products)
+TRENDING PRODUCTS (Most Viewed Products)
 ═══════════════════════════════════════════════════════
 ${analyticsData.productAnalytics?.productViews?.slice(0, 10).map((p: any, i: number) => `${i + 1}. ${p.product}: ${p.views} views`).join('\n') || 'No trending products data'}
 
@@ -378,7 +378,7 @@ Generate a clean, data-focused report. Bullet points only. No fluff.`;
           name: item.name,
           price: item.price,
           size: item.size,
-          flavor: item.flavor
+          quantity: item.quantity
         })) || [],
         createdAt: cart.createdAt,
         hoursAgo: Math.round((Date.now() - new Date(cart.createdAt).getTime()) / (1000 * 60 * 60))

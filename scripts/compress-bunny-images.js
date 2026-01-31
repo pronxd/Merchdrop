@@ -22,7 +22,7 @@ const BUNNY_HOSTNAME = process.env.BUNNY_HOSTNAME;
 const BUNNY_CDN_URL = process.env.BUNNY_CDN_URL;
 
 // Configuration
-const FOLDER_TO_COMPRESS = 'cakes'; // Change this to the folder you want to compress
+const FOLDER_TO_COMPRESS = 'products'; // Change this to the folder you want to compress
 const MAX_WIDTH = 800;
 const MAX_HEIGHT = 800;
 const QUALITY = 90; // 1-100

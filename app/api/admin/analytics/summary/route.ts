@@ -56,11 +56,11 @@ IMPORTANT RULES:
 EXAMPLE TONE:
 ">> ANALYTICS SCAN COMPLETE
 Traffic up 23% from last week → customers are finding you
-Top product: 'Celestial Cake' with 47 views → push this on socials
+Top product: 'Limited Tee' with 47 views → push this on socials
 ✓ 2 new orders today, avg order value holding steady at $175
 → Weekend traffic spikes suggest scheduling IG posts for Fri-Sat"
 
-Now analyze the following data and give Kassy a terminal-style summary:`;
+Now analyze the following data and give the store owner a terminal-style summary:`;
 
     const userPrompt = `CURRENT ANALYTICS DATA:
 
@@ -78,7 +78,7 @@ SALES:
 TOP PAGES:
 ${analyticsData.topPages?.slice(0, 3).map((p: any) => `- ${p.page}: ${p.views} views`).join('\n') || 'No data'}
 
-TRENDING CAKES:
+TRENDING PRODUCTS:
 ${analyticsData.productAnalytics?.productViews?.slice(0, 3).map((p: any) => `- ${p.product}: ${p.views} views`).join('\n') || 'No trending data'}
 
 TRAFFIC SOURCES:
@@ -91,7 +91,7 @@ CART ACTIVITY:
 - Items added to cart: ${analyticsData.cartAnalytics?.addToCart || 0}
 - Checkouts started: ${analyticsData.cartAnalytics?.checkoutStarted || 0}
 
-Generate a concise, terminal-style analytics summary for Kassy. Make it insightful and actionable!`;
+Generate a concise, terminal-style analytics summary for the store owner. Make it insightful and actionable!`;
 
     const response = await fetch(XAI_API_URL, {
       method: 'POST',

@@ -14,11 +14,16 @@ import dotenv from 'dotenv';
 dotenv.config({ path: path.resolve(process.cwd(), '.env.local') });
 
 const MONGODB_URI = process.env.MONGODB_URI;
-const DB_NAME = process.env.MONGODB_DB || 'kassycakes';
+const DB_NAME = process.env.MONGODB_DB;
 
 async function backupDatabase() {
   if (!MONGODB_URI) {
     console.error('❌ MONGODB_URI not found in .env.local');
+    process.exit(1);
+  }
+
+  if (!DB_NAME) {
+    console.error('❌ MONGODB_DB not found in .env.local');
     process.exit(1);
   }
 

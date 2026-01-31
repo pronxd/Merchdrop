@@ -1,18 +1,14 @@
-import Hero from "@/components/Hero";
-import FeaturedCakes from "@/components/FeaturedCakes";
-import About from "@/components/About";
-import Reviews from "@/components/Reviews";
-import OrderSection from "@/components/OrderSection";
-import Footer from "@/components/Footer";
+import Hero from "@/components/storefront/Hero";
+import NewArrivals from "@/components/storefront/NewArrivals";
+import YouTubeSection from "@/components/storefront/YouTubeSection";
+import Footer from "@/components/storefront/Footer";
 
 export default function Home() {
   return (
-    <main className="min-h-screen">
+    <main className="min-h-screen bg-black">
       <Hero />
-      <FeaturedCakes />
-      <About />
-      <Reviews />
-      <OrderSection />
+      <NewArrivals />
+      <YouTubeSection />
       <Footer />
     </main>
   );

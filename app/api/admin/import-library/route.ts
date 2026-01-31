@@ -8,7 +8,7 @@ export const revalidate = 0;
 
 /**
  * GET /api/admin/import-library
- * Returns all files from the /Cakes-All/ folder in Bunny CDN
+ * Returns all files from the /Studio/ folder in Bunny CDN
  */
 export async function GET(req: NextRequest) {
   try {
@@ -21,10 +21,10 @@ export async function GET(req: NextRequest) {
       );
     }
 
-    // List files from Cakes-All folder
-    const result = await listBunnyFolder('/Cakes-All/');
+    // List files from Studio folder
+    const result = await listBunnyFolder('/Studio/');
 
-    console.log(`📂 Import library: Found ${result.files?.length || 0} files in Cakes-All`);
+    console.log(`📂 Import library: Found ${result.files?.length || 0} files in Studio`);
 
     if (!result.success) {
       return NextResponse.json(

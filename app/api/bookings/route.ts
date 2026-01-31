@@ -14,23 +14,22 @@ export async function POST(req: NextRequest) {
       orderDate,
       status = 'pending',
       customerInfo,
-      cakeDetails
+      orderDetails
     } = body;
 
     // Validate required fields
-    if (!orderDate || !customerInfo || !cakeDetails) {
+    if (!orderDate || !customerInfo || !orderDetails) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
       );
     }
 
-    // Create the booking first to get the bookingId
     const result = await createBooking({
       orderDate: new Date(orderDate),
       status,
       customerInfo,
-      cakeDetails
+      orderDetails
     });
 
     if (!result.success) {
@@ -40,57 +39,18 @@ export async function POST(req: NextRequest) {
       );
     }
 
-    // If there's an edible image URL in temp, move it to permanent storage
-    let permanentEdibleImageUrl = cakeDetails.edibleImageUrl;
-    if (cakeDetails.edibleImageUrl && cakeDetails.edibleImageUrl.includes('/temp/')) {
-      try {
-        const moveResponse = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL || 'http://localhost:3000'}/api/move-edible-image`, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({
-            tempUrl: cakeDetails.edibleImageUrl,
-            bookingId: result.bookingId
-          })
-        });
-
-        if (moveResponse.ok) {
-          const moveData = await moveResponse.json();
-          permanentEdibleImageUrl = moveData.url;
-          console.log('✅ Moved edible image to permanent storage:', permanentEdibleImageUrl);
-
-          // Update the booking with the permanent URL
-          const { getCollection } = await import('@/lib/mongodb');
-          const { ObjectId } = await import('mongodb');
-          const bookingsCollection = await getCollection('bookings');
-          await bookingsCollection.updateOne(
-            { _id: new ObjectId(result.bookingId) },
-            { $set: { 'cakeDetails.edibleImageUrl': permanentEdibleImageUrl } }
-          );
-        } else {
-          console.warn('Failed to move edible image, using temp URL');
-        }
-      } catch (error) {
-        console.error('Error moving edible image:', error);
-        // Continue with temp URL if move fails
-      }
-    }
-
-    // Send email notification to Kassy
+    // Send email notification to admin
     const emailResult = await sendOrderNotificationEmail({
       _id: result.bookingId as any,
       orderDate: new Date(orderDate),
       createdAt: new Date(),
       status,
       customerInfo,
-      cakeDetails: {
-        ...cakeDetails,
-        edibleImageUrl: permanentEdibleImageUrl
-      }
+      orderDetails
     });
 
     if (!emailResult.success) {
       console.warn('Email notification failed:', emailResult.error);
-      // Don't fail the booking if email fails
     }
 
     return NextResponse.json({

@@ -43,7 +43,6 @@ export async function POST(req: NextRequest) {
     const {
       name,
       category,
-      productType,
       sizes,
       media,
       colorVariants,
@@ -52,12 +51,11 @@ export async function POST(req: NextRequest) {
       description,
       detailed_description,
       searchable_tags,
-      shape,
       buyNowOnly
     } = body;
 
     // Validate required fields
-    if (!name || !category || !productType || !sizes || sizes.length === 0) {
+    if (!name || !category || !sizes || sizes.length === 0) {
       return NextResponse.json(
         { error: 'Missing required fields' },
         { status: 400 }
@@ -72,7 +70,6 @@ export async function POST(req: NextRequest) {
       name,
       slug,
       category,
-      productType,
       sizes,
       media: media || [],
       colorVariants: colorVariants || [],
@@ -81,7 +78,6 @@ export async function POST(req: NextRequest) {
       description,
       detailed_description,
       searchable_tags,
-      shape,
       buyNowOnly: buyNowOnly || false,
       hidden: false
     });

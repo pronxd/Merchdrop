@@ -3,9 +3,15 @@ import clientPromise from "@/lib/mongodb";
 import { isAdminAuthenticated } from "@/lib/auth";
 import Stripe from 'stripe';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2025-10-29.clover',
-});
+let stripe: Stripe | null = null;
+function getStripeClient() {
+  if (!stripe) {
+    stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+      apiVersion: '2025-10-29.clover',
+    });
+  }
+  return stripe;
+}
 
 // Convert URL paths to friendly names
 function getFriendlyPageName(url: string): string {
@@ -14,12 +20,8 @@ function getFriendlyPageName(url: string): string {
 
   // Map paths to friendly names
   if (path === '/') return 'Homepage';
-  if (path === '/cakes') return 'Cakes Gallery';
-  if (path === '/cart') return 'Shopping Cart';
   if (path === '/blog') return 'Blog';
-  if (path.startsWith('/cakes/product/')) return 'Product Page';
-  if (path.startsWith('/cakes/customize/')) return 'Customize Cake';
-  if (path.startsWith('/cakes/')) return 'Cake Category';
+  if (path.startsWith('/product/')) return 'Product Page';
   if (path.startsWith('/blog/')) return 'Blog Post';
 
   // Return the path itself if no mapping found
@@ -165,7 +167,7 @@ export async function GET(request: NextRequest) {
       const processedEvents = processEventsData(eventsData);
 
       // Process product page views from Umami
-      const trendingCakes = processTrendingCakes(pagesData, mongoProductsData);
+      const trendingProducts = processTrendingProducts(pagesData, mongoProductsData);
 
       // Format the response
       const analyticsData = {
@@ -199,7 +201,7 @@ export async function GET(request: NextRequest) {
             .filter((page: any) => {
               const url = page.x || page.url || "";
               // Filter out admin pages and localhost
-              return !url.startsWith('/kassyadmin') && !url.includes('localhost');
+              return !url.startsWith('/admin') && !url.includes('localhost');
             })
             .slice(0, 10)
             .map((page: any) => ({
@@ -250,7 +252,7 @@ export async function GET(request: NextRequest) {
         cartAnalytics: processedEvents.cartAnalytics,
         productAnalytics: {
           ...processedEvents.productAnalytics,
-          productViews: trendingCakes, // Use page view data instead of custom events
+          productViews: trendingProducts, // Use page view data instead of custom events
         },
         salesAnalytics: {
           totalRevenue: stripeSalesData.totalRevenue,
@@ -324,7 +326,7 @@ export async function GET(request: NextRequest) {
 async function getTodaysOrdersCount() {
   try {
     const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB || "kassycakes");
+    const db = client.db(process.env.MONGODB_DB || "Merchstore");
     const bookings = db.collection("bookings");
 
     const startOfDay = new Date();
@@ -376,7 +378,7 @@ async function fetchStripeSalesData(startDate: Date, endDate: Date) {
         params.starting_after = startingAfter;
       }
 
-      const sessions = await stripe.checkout.sessions.list(params);
+      const sessions = await getStripeClient().checkout.sessions.list(params);
       allSessions = allSessions.concat(sessions.data);
 
       hasMore = sessions.has_more;
@@ -612,7 +614,7 @@ async function fetchStripeSalesData(startDate: Date, endDate: Date) {
 async function fetchMongoVisitors(startDate: Date, endDate: Date) {
   try {
     const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB || "kassycakes");
+    const db = client.db(process.env.MONGODB_DB || "Merchstore");
     const visitors = db.collection("visitor_sessions");
 
     const sessions = await visitors
@@ -721,7 +723,7 @@ function formatTime(seconds: number): string {
 async function fetchMongoProducts() {
   try {
     const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB || "kassycakes");
+    const db = client.db(process.env.MONGODB_DB || "Merchstore");
     const products = db.collection("products");
 
     const allProducts = await products.find({}).toArray();
@@ -732,7 +734,7 @@ async function fetchMongoProducts() {
   }
 }
 
-function processTrendingCakes(pagesData: any, mongoProducts: any[]) {
+function processTrendingProducts(pagesData: any, mongoProducts: any[]) {
   if (!Array.isArray(pagesData) || mongoProducts.length === 0) {
     return [];
   }
@@ -742,8 +744,8 @@ function processTrendingCakes(pagesData: any, mongoProducts: any[]) {
 
   pagesData.forEach((page: any) => {
     const url = page.x || page.url || "";
-    // Match URLs like /cakes/product/690f7162196b1d1935db83b6
-    const productMatch = url.match(/^\/cakes\/product\/([a-f0-9]+)$/i);
+    // Match URLs like /product/690f7162196b1d1935db83b6
+    const productMatch = url.match(/^\/product\/([a-f0-9]+)$/i);
 
     if (productMatch) {
       const productId = productMatch[1];
@@ -754,7 +756,7 @@ function processTrendingCakes(pagesData: any, mongoProducts: any[]) {
   });
 
   // Match product IDs to product data from MongoDB
-  const trendingCakes = productPageViews
+  const trendingProducts = productPageViews
     .map(({ productId, views }) => {
       // Convert productId string to MongoDB ObjectId-like format for comparison
       const product = mongoProducts.find((p: any) => {
@@ -768,7 +770,7 @@ function processTrendingCakes(pagesData: any, mongoProducts: any[]) {
           productId: productId,
           views: views,
           revenue: 0, // Can be populated from sales data if needed
-          imageUrl: product.media?.[0]?.url || 'https://kassy.b-cdn.net/placeholder-cake.webp',
+          imageUrl: product.media?.[0]?.url || '',
         };
       }
       return null;
@@ -777,7 +779,7 @@ function processTrendingCakes(pagesData: any, mongoProducts: any[]) {
     .sort((a: any, b: any) => b.views - a.views)
     .slice(0, 10);
 
-  return trendingCakes;
+  return trendingProducts;
 }
 
 function processEventsData(eventsData: any) {

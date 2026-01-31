@@ -46,8 +46,8 @@ export async function POST(req: NextRequest) {
         },
       ],
       mode: 'payment',
-      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/kassycakes/dashboard?tab=studio&wallet=success&amount=${amount}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/kassycakes/dashboard?tab=studio&wallet=cancelled`,
+      success_url: `${process.env.NEXT_PUBLIC_BASE_URL}/admin/dashboard?tab=studio&wallet=success&amount=${amount}`,
+      cancel_url: `${process.env.NEXT_PUBLIC_BASE_URL}/admin/dashboard?tab=studio&wallet=cancelled`,
       customer_email: session.user.email,
       metadata: {
         type: 'wallet_topup',

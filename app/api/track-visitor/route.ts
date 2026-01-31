@@ -17,7 +17,7 @@ export async function POST(request: NextRequest) {
 
     // Connect to MongoDB
     const client = await clientPromise;
-    const db = client.db(process.env.MONGODB_DB || "kassycakes");
+    const db = client.db(process.env.MONGODB_DB || "Merchstore");
     const visitors = db.collection("visitor_sessions");
 
     // Check if this visitor already has a recent session (within last 30 minutes)

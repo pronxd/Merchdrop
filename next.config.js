@@ -4,11 +4,7 @@ const nextConfig = {
     remotePatterns: [
       {
         protocol: 'https',
-        hostname: 'kassycakes.b-cdn.net',
-      },
-      {
-        protocol: 'https',
-        hostname: 'kassy.b-cdn.net',
+        hostname: 'merch.b-cdn.net',
       },
     ],
   },

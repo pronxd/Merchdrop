@@ -4,7 +4,7 @@ import { ObjectId } from 'mongodb';
 // Discount Code interface
 export interface DiscountCodeDB {
   _id?: ObjectId;
-  code: string; // Case-sensitive code (e.g., "kassy26", "SPRING2024")
+  code: string; // Case-sensitive code (e.g., "POPDRP20", "SPRING2024")
   percentage: number; // Discount percentage (e.g., 10, 15, 25)
   active: boolean; // Whether this code is currently usable
   usageCount: number; // How many times this code has been used

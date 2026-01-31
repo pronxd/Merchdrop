@@ -53,7 +53,7 @@ export async function POST(req: NextRequest) {
     // Generate filename with timestamp
     const timestamp = Date.now();
     const fileName = `edited-${timestamp}.png`;
-    const path = `/Cakes-All/${fileName}`;
+    const path = `/Studio/${fileName}`;
 
     console.log(`💾 Saving edited image to: ${path}`);
 

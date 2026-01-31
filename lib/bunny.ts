@@ -17,7 +17,7 @@ interface BunnyDeleteResult {
 /**
  * Upload a file to Bunny CDN Storage
  * @param file - The file to upload (as Buffer or base64 string)
- * @param fileName - The file name (will be placed in /cakes/{productName}/ folder)
+ * @param fileName - The file name (will be placed in /products/{productName}/ folder)
  * @param productName - Product name for folder organization
  * @returns Upload result with CDN URL
  */
@@ -30,7 +30,7 @@ export async function uploadToBunny(
     const BUNNY_STORAGE_ZONE = process.env.BUNNY_STORAGE_ZONE;
     const BUNNY_ACCESS_KEY = process.env.BUNNY_ACCESS_KEY;
     const BUNNY_HOSTNAME = process.env.BUNNY_HOSTNAME; // e.g., "storage.bunnycdn.com"
-    const BUNNY_CDN_URL = process.env.BUNNY_CDN_URL; // e.g., "https://kassy.b-cdn.net"
+    const BUNNY_CDN_URL = process.env.BUNNY_CDN_URL; // e.g., "https://merchdrop.b-cdn.net"
 
     if (!BUNNY_STORAGE_ZONE || !BUNNY_ACCESS_KEY || !BUNNY_HOSTNAME || !BUNNY_CDN_URL) {
       return {
@@ -45,8 +45,8 @@ export async function uploadToBunny(
       .replace(/[^a-z0-9]+/g, '-')
       .replace(/^-|-$/g, '');
 
-    // Create path: /cakes/{productName}/{fileName}
-    const path = `/cakes/${folderName}/${fileName}`;
+    // Create path: /products/{productName}/{fileName}
+    const path = `/products/${folderName}/${fileName}`;
 
     // Convert base64 to buffer if needed
     let fileBuffer: Buffer;
@@ -98,7 +98,7 @@ export async function uploadToBunny(
 
 /**
  * Delete a file from Bunny CDN Storage
- * @param filePath - Full path of the file (e.g., "/cakes/smashing-pumpkins/photo.jpg")
+ * @param filePath - Full path of the file (e.g., "/products/classic-logo-tee/photo.jpg")
  * @returns Delete result
  */
 export async function deleteFromBunny(filePath: string): Promise<BunnyDeleteResult> {
@@ -147,8 +147,8 @@ export async function deleteFromBunny(filePath: string): Promise<BunnyDeleteResu
 
 /**
  * Extract path from Bunny CDN URL
- * @param url - Full CDN URL (e.g., "https://kassy.b-cdn.net/cakes/foo/bar.jpg")
- * @returns Path (e.g., "/cakes/foo/bar.jpg")
+ * @param url - Full CDN URL (e.g., "https://merchdrop.b-cdn.net/products/foo/bar.jpg")
+ * @returns Path (e.g., "/products/foo/bar.jpg")
  */
 export function extractPathFromCdnUrl(url: string): string | null {
   try {

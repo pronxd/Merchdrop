@@ -25,7 +25,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
       Link.configure({
         openOnClick: false,
         HTMLAttributes: {
-          class: 'text-pink-500 underline',
+          class: 'text-red-500 underline',
         },
       }),
       Image.configure({
@@ -83,7 +83,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleBold().run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('bold')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Bold"
@@ -94,7 +94,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleItalic().run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('italic')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Italic"
@@ -105,7 +105,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleUnderline().run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('underline')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Underline"
@@ -116,7 +116,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleStrike().run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('strike')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Strikethrough"
@@ -131,7 +131,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleHeading({ level: 1 }).run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('heading', { level: 1 })
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Heading 1"
@@ -142,7 +142,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleHeading({ level: 2 }).run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('heading', { level: 2 })
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Heading 2"
@@ -158,7 +158,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleHeading({ level: 3 }).run()}
             className={`hidden sm:flex w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors items-center justify-center ${
               editor.isActive('heading', { level: 3 })
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Heading 3"
@@ -173,7 +173,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleBulletList().run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('bulletList')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Bullet List"
@@ -184,7 +184,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleOrderedList().run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('orderedList')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Numbered List"
@@ -199,7 +199,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().setTextAlign('left').run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive({ textAlign: 'left' })
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Align Left"
@@ -210,7 +210,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().setTextAlign('center').run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive({ textAlign: 'center' })
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Align Center"
@@ -225,7 +225,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={addLink}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('link')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Add Link"
@@ -247,7 +247,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().toggleBlockquote().run()}
             className={`w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors flex items-center justify-center ${
               editor.isActive('blockquote')
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Block Quote"
@@ -271,7 +271,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             onClick={() => editor.chain().focus().setTextAlign('right').run()}
             className={`hidden sm:flex w-9 h-9 sm:w-auto sm:h-auto sm:px-3 sm:py-1.5 rounded text-sm font-medium transition-colors items-center justify-center ${
               editor.isActive({ textAlign: 'right' })
-                ? 'bg-pink-500 text-white'
+                ? 'bg-red-500 text-white'
                 : 'bg-white dark:bg-zinc-800 text-gray-700 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-zinc-700'
             }`}
             title="Align Right"
@@ -311,7 +311,7 @@ export default function TiptapEditor({ content, onChange, placeholder }: TiptapE
             navigator.clipboard.writeText(html);
             alert('HTML copied to clipboard!');
           }}
-          className="text-xs text-pink-500 hover:text-pink-600 font-medium px-2 py-1"
+          className="text-xs text-red-500 hover:text-red-600 font-medium px-2 py-1"
         >
           Copy HTML
         </button>

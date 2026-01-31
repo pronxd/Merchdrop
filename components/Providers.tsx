@@ -1,27 +1,24 @@
 "use client";
 
 import { SessionProvider } from "next-auth/react";
-import { CartProvider } from "@/context/CartContext";
-import { TransitionProvider } from "@/context/TransitionContext";
 import { ProductsProvider } from "@/context/ProductsContext";
-import Navigation from "@/components/Navigation";
-import PromoPopup from "@/components/PromoPopup";
+import { StorefrontCartProvider } from "@/context/StorefrontCartContext";
+import Header from "@/components/storefront/Header";
+import CartDrawer from "@/components/storefront/CartDrawer";
 import { usePathname } from "next/navigation";
 
 export default function Providers({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const isAdminPage = pathname?.startsWith('/kassycakes/dashboard') || pathname?.startsWith('/kassycakes/orders') || pathname?.startsWith('/kassycakes');
+  const isAdminPage = pathname?.startsWith("/admin");
 
   return (
     <SessionProvider>
       <ProductsProvider>
-        <CartProvider>
-          <TransitionProvider>
-            {!isAdminPage && <Navigation />}
-            {!isAdminPage && <PromoPopup />}
-            {children}
-          </TransitionProvider>
-        </CartProvider>
+        <StorefrontCartProvider>
+          {!isAdminPage && <Header />}
+          {!isAdminPage && <CartDrawer />}
+          {children}
+        </StorefrontCartProvider>
       </ProductsProvider>
     </SessionProvider>
   );

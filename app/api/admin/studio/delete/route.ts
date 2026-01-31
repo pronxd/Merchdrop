@@ -34,7 +34,7 @@ export async function DELETE(req: NextRequest) {
     }
 
     // Extract the path from the CDN URL
-    // e.g., https://kassy.b-cdn.net/Cakes-All/123.jpg -> /Cakes-All/123.jpg
+    // e.g., https://merchdrop.b-cdn.net/products/item/123.jpg -> /products/item/123.jpg
     const filePath = fileUrl.replace(BUNNY_CDN_URL, '');
 
     console.log(`🗑️ Deleting file: ${filePath}`);

@@ -14,7 +14,7 @@ const BUNNY_ACCESS_KEY = process.env.BUNNY_ACCESS_KEY;
 const BUNNY_STORAGE_ZONE = process.env.BUNNY_STORAGE_ZONE;
 const BUNNY_HOSTNAME = process.env.BUNNY_HOSTNAME;
 
-const FOLDER_TO_CLEAN = 'cakes';
+const FOLDER_TO_CLEAN = 'products';
 
 function bunnyRequest(method, path, body = null) {
   return new Promise((resolve, reject) => {

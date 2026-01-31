@@ -7,8 +7,7 @@ if (!process.env.MONGODB_URI) {
 const uri = process.env.MONGODB_URI;
 const options = {
   tls: true,
-  tlsAllowInvalidCertificates: false,
-  tlsAllowInvalidHostnames: false,
+  tlsAllowInvalidCertificates: true,
   serverSelectionTimeoutMS: 5000,
   connectTimeoutMS: 10000,
 };
@@ -50,7 +49,7 @@ export default clientPromise;
 // Helper to get database
 export async function getDb(): Promise<Db> {
   const client = await clientPromise;
-  return client.db(process.env.MONGODB_DB || 'kassycakes');
+  return client.db(process.env.MONGODB_DB || 'Merchstore');
 }
 
 // Helper to get collections
