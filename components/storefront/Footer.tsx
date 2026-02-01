@@ -115,7 +115,7 @@ export default function Footer() {
             <ul className="space-y-2">
               <li>
                 <a
-                  href="https://www.instagram.com/meatcanyon/"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white/60 hover:text-red-500 transition-colors flex items-center gap-2"
@@ -126,17 +126,7 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://www.tiktok.com/@meatcanyonyt"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-red-500 transition-colors"
-                >
-                  TikTok
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://x.com/meatcanyon"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white/60 hover:text-red-500 transition-colors flex items-center gap-2"
@@ -147,23 +137,13 @@ export default function Footer() {
               </li>
               <li>
                 <a
-                  href="https://www.youtube.com/channel/UC91V6D3nkhP89wUb9f_h17g"
+                  href="#"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="text-white/60 hover:text-red-500 transition-colors flex items-center gap-2"
                 >
                   <Youtube className="w-4 h-4" />
                   YouTube
-                </a>
-              </li>
-              <li>
-                <a
-                  href="https://patreon.com/meatcanyon"
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="text-white/60 hover:text-red-500 transition-colors"
-                >
-                  Patreon
                 </a>
               </li>
             </ul>
@@ -211,12 +191,12 @@ export default function Footer() {
             <p>
               Powered by{" "}
               <a
-                href="https://www.warrenjames.org"
+                href="https://jamesweb.dev/contact"
                 target="_blank"
                 rel="noopener noreferrer"
                 className="hover:text-white transition-colors"
               >
-                Warren James
+                Lucas James
               </a>
             </p>
             <p className="mt-1">

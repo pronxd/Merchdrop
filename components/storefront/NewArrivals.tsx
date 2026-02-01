@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useRef } from "react";
 import Link from "next/link";
 import { useProducts } from "@/context/ProductsContext";
 import { useStorefrontCart } from "@/context/StorefrontCartContext";
@@ -8,7 +8,7 @@ import type { StorefrontProduct } from "@/types/storefront";
 
 export default function NewArrivals() {
   const { products: dbProducts, loading } = useProducts();
-  const { addItem } = useStorefrontCart();
+  const { addItemWithAnimation } = useStorefrontCart();
 
   // Transform DB products to StorefrontProduct format
   const products: StorefrontProduct[] = dbProducts.map((p: any) => {
@@ -63,7 +63,9 @@ export default function NewArrivals() {
               <ProductCard
                 key={product.id}
                 product={product}
-                onAddToCart={(size?: string) => addItem(product, size)}
+                onAddToCart={(size?: string, sourceEl?: HTMLElement | null) =>
+                  addItemWithAnimation(product, size, sourceEl)
+                }
               />
             ))}
           </div>
@@ -82,7 +84,7 @@ export default function NewArrivals() {
 
 interface ProductCardProps {
   product: StorefrontProduct;
-  onAddToCart: (size?: string) => void;
+  onAddToCart: (size?: string, sourceEl?: HTMLElement | null) => void;
 }
 
 function ProductCard({ product, onAddToCart }: ProductCardProps) {
@@ -91,6 +93,7 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
     hasSizes ? null : null
   );
   const [showSizePicker, setShowSizePicker] = useState(false);
+  const imageRef = useRef<HTMLImageElement>(null);
 
   const displayPrice = selectedSize && product.sizes
     ? product.sizes.find((s) => s.size === selectedSize)?.price ?? product.price
@@ -101,7 +104,7 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
       setShowSizePicker(true);
       return;
     }
-    onAddToCart(selectedSize ?? undefined);
+    onAddToCart(selectedSize ?? undefined, imageRef.current);
     setSelectedSize(null);
     setShowSizePicker(false);
   };
@@ -113,6 +116,7 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
         <Link href={`/product/${product.id}`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
           <img
+            ref={imageRef}
             src={product.image}
             alt={product.name}
             className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
@@ -138,7 +142,7 @@ function ProductCard({ product, onAddToCart }: ProductCardProps) {
                   key={s.size}
                   onClick={() => {
                     setSelectedSize(s.size);
-                    onAddToCart(s.size);
+                    onAddToCart(s.size, imageRef.current);
                     setSelectedSize(null);
                     setShowSizePicker(false);
                   }}

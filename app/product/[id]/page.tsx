@@ -1,11 +1,13 @@
 "use client";
 
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
 import {
   ChevronDown,
   ChevronUp,
+  ChevronLeft,
+  ChevronRight,
   Ruler,
   Shirt,
   Heart,
@@ -68,7 +70,7 @@ export default function ProductPage() {
           const others = (allData.products || []).filter(
             (p: DBProduct) => p._id !== data.product._id
           );
-          setRelatedProducts(others.slice(0, 3));
+          setRelatedProducts(others);
         }
       } catch {
         setNotFound(true);
@@ -437,41 +439,187 @@ export default function ProductPage() {
 
       {/* You May Also Like */}
       {relatedProducts.length > 0 && (
-        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-white/10">
-          <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
-            You may also like....
-          </h2>
-          <div className="grid grid-cols-2 md:grid-cols-3 gap-4 md:gap-6">
-            {relatedProducts.map((rp) => {
-              const rpImage =
-                rp.media?.find((m) => m.isThumbnail)?.url ||
-                rp.media?.[0]?.url ||
-                "/images/products/placeholder.jpg";
-              const rpPrice = rp.sizes?.[0]?.price ?? 0;
-              return (
-                <Link
-                  key={rp._id}
-                  href={`/product/${rp._id}`}
-                  className="group"
-                >
-                  <div className="aspect-[3/4] bg-neutral-900 overflow-hidden mb-4">
-                    {/* eslint-disable-next-line @next/next/no-img-element */}
-                    <img
-                      src={rpImage}
-                      alt={rp.name}
-                      className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
-                    />
-                  </div>
-                  <h3 className="text-white font-medium group-hover:text-red-500 transition-colors line-clamp-2">
-                    {rp.name}
-                  </h3>
-                  <p className="text-white/60">${rpPrice}</p>
-                </Link>
-              );
-            })}
-          </div>
-        </section>
+        <RelatedProducts products={relatedProducts} />
       )}
     </main>
+  );
+}
+
+/* ── Related Products Section ── */
+
+function RelatedProductCard({ rp, fadeIn }: { rp: DBProduct; fadeIn?: boolean }) {
+  const cardRef = useRef<HTMLAnchorElement>(null);
+  const [visible, setVisible] = useState(!fadeIn);
+
+  useEffect(() => {
+    if (!fadeIn || !cardRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setVisible(true);
+          observer.disconnect();
+        }
+      },
+      { threshold: 0.1 }
+    );
+    observer.observe(cardRef.current);
+    return () => observer.disconnect();
+  }, [fadeIn]);
+
+  const rpImage =
+    rp.media?.find((m) => m.isThumbnail)?.url ||
+    rp.media?.[0]?.url ||
+    "/images/products/placeholder.jpg";
+  const rpPrice = rp.sizes?.[0]?.price ?? 0;
+
+  return (
+    <Link
+      ref={cardRef}
+      href={`/product/${rp._id}`}
+      className={`group flex-shrink-0 transition-opacity duration-500 ${
+        visible ? "opacity-100" : "opacity-0"
+      }`}
+    >
+      <div className="aspect-[3/4] bg-neutral-900 overflow-hidden mb-4">
+        {/* eslint-disable-next-line @next/next/no-img-element */}
+        <img
+          src={rpImage}
+          alt={rp.name}
+          className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+        />
+      </div>
+      <h3 className="text-white font-medium group-hover:text-red-500 transition-colors line-clamp-2">
+        {rp.name}
+      </h3>
+      <p className="text-white/60">${rpPrice}</p>
+    </Link>
+  );
+}
+
+const MOBILE_INITIAL = 3;
+const MOBILE_BATCH = 9;
+
+function RelatedProducts({ products }: { products: DBProduct[] }) {
+  const [mobileCount, setMobileCount] = useState(MOBILE_INITIAL);
+  const [moreClicked, setMoreClicked] = useState(false);
+  const sentinelRef = useRef<HTMLDivElement>(null);
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const [canScrollLeft, setCanScrollLeft] = useState(false);
+  const [canScrollRight, setCanScrollRight] = useState(true);
+
+  // Infinite scroll on mobile after "more" is clicked
+  useEffect(() => {
+    if (!moreClicked || !sentinelRef.current) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setMobileCount((prev) => {
+            const next = prev + MOBILE_BATCH;
+            if (next >= products.length) {
+              observer.disconnect();
+            }
+            return Math.min(next, products.length);
+          });
+        }
+      },
+      { rootMargin: "200px" }
+    );
+    observer.observe(sentinelRef.current);
+    return () => observer.disconnect();
+  }, [moreClicked, products.length]);
+
+  // Desktop carousel scroll state
+  const updateScrollButtons = useCallback(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    setCanScrollLeft(el.scrollLeft > 0);
+    setCanScrollRight(el.scrollLeft + el.clientWidth < el.scrollWidth - 2);
+  }, []);
+
+  useEffect(() => {
+    const el = scrollRef.current;
+    if (!el) return;
+    updateScrollButtons();
+    el.addEventListener("scroll", updateScrollButtons, { passive: true });
+    return () => el.removeEventListener("scroll", updateScrollButtons);
+  }, [updateScrollButtons, products]);
+
+  const scroll = (dir: "left" | "right") => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const card = el.querySelector<HTMLElement>("[data-carousel-item]");
+    const scrollAmount = card ? (card.offsetWidth + 24) * 3 : el.clientWidth * 0.8;
+    el.scrollBy({ left: dir === "left" ? -scrollAmount : scrollAmount, behavior: "smooth" });
+  };
+
+  const handleMoreClick = () => {
+    setMoreClicked(true);
+    setMobileCount((prev) => Math.min(prev + MOBILE_BATCH, products.length));
+  };
+
+  const mobileProducts = products.slice(0, mobileCount);
+  const showMoreButton = !moreClicked && mobileCount < products.length;
+
+  return (
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16 border-t border-white/10">
+      <h2 className="text-2xl md:text-3xl font-bold text-white mb-8">
+        You may also like....
+      </h2>
+
+      {/* Mobile: Grid with "more" button + infinite scroll */}
+      <div className="md:hidden">
+        <div className="grid grid-cols-2 gap-4">
+          {mobileProducts.map((rp, i) => (
+            <RelatedProductCard key={rp._id} rp={rp} fadeIn={i >= MOBILE_INITIAL} />
+          ))}
+          {showMoreButton && (
+            <button
+              onClick={handleMoreClick}
+              className="aspect-[3/4] bg-neutral-900 border-2 border-red-600 flex items-center justify-center hover:bg-red-600/10 transition-colors"
+            >
+              <span className="text-red-600 font-bold tracking-wider text-lg">MORE</span>
+            </button>
+          )}
+        </div>
+        {/* Infinite scroll sentinel */}
+        {moreClicked && mobileCount < products.length && (
+          <div ref={sentinelRef} className="h-10" />
+        )}
+      </div>
+
+      {/* Desktop: Horizontal carousel with arrows */}
+      <div className="hidden md:block relative group/carousel">
+        {/* Left Arrow */}
+        {canScrollLeft && (
+          <button
+            onClick={() => scroll("left")}
+            className="absolute left-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 border border-white/20 hover:border-white/50 text-white p-3 -ml-4 transition-all opacity-0 group-hover/carousel:opacity-100"
+          >
+            <ChevronLeft className="w-6 h-6" />
+          </button>
+        )}
+
+        {/* Right Arrow */}
+        {canScrollRight && (
+          <button
+            onClick={() => scroll("right")}
+            className="absolute right-0 top-1/2 -translate-y-1/2 z-10 bg-black/80 border border-white/20 hover:border-white/50 text-white p-3 -mr-4 transition-all opacity-0 group-hover/carousel:opacity-100"
+          >
+            <ChevronRight className="w-6 h-6" />
+          </button>
+        )}
+
+        <div
+          ref={scrollRef}
+          className="flex gap-6 overflow-x-auto scrollbar-hide scroll-smooth"
+        >
+          {products.map((rp) => (
+            <div key={rp._id} data-carousel-item className="w-[calc(33.333%-16px)] flex-shrink-0">
+              <RelatedProductCard rp={rp} />
+            </div>
+          ))}
+        </div>
+      </div>
+    </section>
   );
 }

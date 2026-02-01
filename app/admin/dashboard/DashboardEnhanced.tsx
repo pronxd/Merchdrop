@@ -128,8 +128,6 @@ export default function DashboardEnhanced() {
   const [imageModalOpen, setImageModalOpen] = useState(false);
   const [imageModalUrl, setImageModalUrl] = useState('');
   const [orderSearchQuery, setOrderSearchQuery] = useState('');
-  const [selectedDate, setSelectedDate] = useState<Date | null>(null);
-  const [calendarStartDate, setCalendarStartDate] = useState(new Date());
   const [aiSummary, setAiSummary] = useState<string>('');
   const [summaryLoading, setSummaryLoading] = useState(false);
   const [scanInitiated, setScanInitiated] = useState(false);
@@ -403,7 +401,7 @@ export default function DashboardEnhanced() {
         'CONNECTING TO DATABASE...',
         'ESTABLISHING SECURE CONNECTION...',
         '',
-        'POPDRP ADMIN TERMINAL v2.0.1',
+        'PublicEnemy.com ADMIN TERMINAL v2.0.1',
         'COPYRIGHT 2025 JAMESWEB.DEV',
         '',
         'TERMINAL READY',
@@ -839,15 +837,6 @@ Happy managing!`);
     }
   };
 
-  const navigateCalendar = (direction: 'prev' | 'next') => {
-    const newDate = new Date(calendarStartDate);
-    if (direction === 'prev') {
-      newDate.setDate(newDate.getDate() - 7);
-    } else {
-      newDate.setDate(newDate.getDate() + 7);
-    }
-    setCalendarStartDate(newDate);
-  };
 
 
   if (loading && !data) {
@@ -1009,19 +998,11 @@ Happy managing!`);
                   <div className="relative p-4 md:p-6">
                     <div className="flex items-center gap-3">
                       <img
-                        src="https://merchdrop.b-cdn.net/imgi_1_90edba91829d58aeb8304f77936ef407.webp"
-                        alt="POPDRP"
+                        src="https://merch.b-cdn.net/maxresdefault.jpg"
+                        alt="PublicEnemy.com"
                         className="h-9 w-9 rounded-xl object-cover"
                       />
-                      <a href="/" target="_blank" rel="noopener noreferrer" className="hidden md:block text-base font-semibold tracking-tight text-white hover:text-white/80 transition">POPDRP</a>
-                    </div>
-                    {/* Live visitor badge - positioned top right */}
-                    <div className="absolute top-2 right-2 md:top-3 md:right-3 flex items-center gap-1.5 bg-zinc-900/80 backdrop-blur-sm rounded-full px-2 py-1">
-                      <div className="relative">
-                        <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
-                        <div className="absolute inset-0 w-2 h-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
-                      </div>
-                      <span className="text-xs text-slate-400">{realtimeVisitors}</span>
+                      <a href="/" target="_blank" rel="noopener noreferrer" className="hidden md:block text-base font-semibold tracking-tight text-white hover:text-white/80 transition">PublicEnemy.com</a>
                     </div>
                   </div>
 
@@ -1073,7 +1054,7 @@ Happy managing!`);
                       <div className="hidden md:flex flex-1 items-center justify-between">
                         <div>
                           <p className="text-sm font-medium text-white/90">Admin</p>
-                          <p className="text-xs text-white/60">POPDRP</p>
+                          <p className="text-xs text-white/60">PublicEnemy.com</p>
                         </div>
                       </div>
                     </div>
@@ -1801,111 +1782,6 @@ Happy managing!`);
                 </button>
               </div>
 
-              {/* Horizontal Calendar - Only show for paid orders */}
-              {ordersSubTab === 'orders' && (
-              <div className="border-gradient-inner rounded-2xl bg-zinc-900/50 p-4 pb-5">
-                <div className="flex items-center justify-between mb-3 min-h-[40px]">
-                  <div className="flex items-center gap-4 flex-wrap">
-                    <button
-                      onClick={() => {
-                        setSelectedDate(null);
-                        setOrderSearchQuery('');
-                      }}
-                      className={`px-4 py-2 rounded-lg text-sm font-medium transition-colors ${selectedDate === null
-                        ? 'bg-white/10 text-white border-gradient border-gradient-xs'
-                        : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
-                        }`}
-                    >
-                      All Orders
-                    </button>
-                    <div className={`text-sm transition-opacity ${selectedDate ? 'opacity-100' : 'opacity-0 invisible'}`}>
-                      <span className="font-semibold text-white">
-                        {selectedDate?.toLocaleDateString('en-US', {
-                          weekday: 'long',
-                          month: 'long',
-                          day: 'numeric',
-                          year: 'numeric'
-                        })}
-                      </span>
-                      <span className="text-slate-500 ml-2">
-                        {selectedDate && (() => {
-                          const daysFromNow = Math.ceil((selectedDate.getTime() - new Date().getTime()) / (1000 * 60 * 60 * 24));
-                          if (daysFromNow === 0) return '(Today)';
-                          if (daysFromNow === 1) return '(Tomorrow)';
-                          if (daysFromNow === -1) return '(Yesterday)';
-                          if (daysFromNow > 0) return `(${daysFromNow} days from now)`;
-                          return `(${Math.abs(daysFromNow)} days ago)`;
-                        })()}
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div className="flex items-center gap-1 sm:gap-2">
-                  <button
-                    onClick={() => navigateCalendar('prev')}
-                    className="p-1.5 sm:p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
-                  >
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M15 19l-7-7 7-7" />
-                    </svg>
-                  </button>
-
-                  <div className="flex-1">
-                    <div className="grid grid-cols-5 sm:grid-cols-7 gap-1 sm:gap-2">
-                      {Array.from({ length: 7 }, (_, i) => {
-                        const date = new Date(calendarStartDate);
-                        date.setDate(calendarStartDate.getDate() + i);
-                        const isToday = new Date().toDateString() === date.toDateString();
-                        const isSelected = selectedDate && selectedDate.toDateString() === date.toDateString();
-
-                        // Count orders for this date
-                        const ordersOnDate = bookings.filter(booking => {
-                          const orderDate = new Date(booking.orderDate);
-                          return orderDate.toDateString() === date.toDateString();
-                        }).length;
-
-                        return (
-                          <button
-                            key={i}
-                            onClick={() => setSelectedDate(date)}
-                            className={`p-1 sm:p-2 rounded-lg sm:rounded-xl text-center transition-all h-[56px] sm:h-[80px] flex flex-col justify-center ${i >= 5 ? 'hidden sm:flex' : ''} ${isSelected
-                              ? 'bg-white/10 text-white border-gradient border-gradient-xs'
-                              : isToday
-                                ? 'bg-emerald-500/20 text-emerald-400 ring-1 ring-emerald-500/50'
-                                : 'bg-white/5 text-slate-400 hover:bg-white/10 hover:text-white'
-                              }`}
-                          >
-                            <div className="text-[9px] sm:text-xs font-medium opacity-70">
-                              {date.toLocaleDateString('en-US', { weekday: 'short' })}
-                            </div>
-                            <div className="text-sm sm:text-lg font-bold">
-                              {date.getDate()}
-                            </div>
-                            <div className="text-[8px] sm:text-xs h-3 sm:h-4">
-                              {ordersOnDate > 0 && (
-                                <span className="text-emerald-400">
-                                  {ordersOnDate}
-                                </span>
-                              )}
-                            </div>
-                          </button>
-                        );
-                      })}
-                    </div>
-                  </div>
-
-                  <button
-                    onClick={() => navigateCalendar('next')}
-                    className="p-1.5 sm:p-2 hover:bg-white/10 rounded-lg transition-colors flex-shrink-0"
-                  >
-                    <svg className="w-4 h-4 sm:w-5 sm:h-5 text-slate-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                    </svg>
-                  </button>
-                </div>
-              </div>
-              )}
-
               {/* Search Bar - Only for paid orders */}
               {ordersSubTab === 'orders' && (
               <div className="relative">
@@ -1943,14 +1819,6 @@ Happy managing!`);
                   return false;
                 }
 
-                // Date filter
-                if (selectedDate) {
-                  const orderDate = new Date(booking.orderDate);
-                  if (orderDate.toDateString() !== selectedDate.toDateString()) {
-                    return false;
-                  }
-                }
-
                 // Search query filter
                 if (orderSearchQuery.trim()) {
                   const query = orderSearchQuery.toLowerCase().replace('#', ''); // Remove # if present
@@ -1973,9 +1841,7 @@ Happy managing!`);
               return filteredBookings.length === 0 ? (
                 <div className="border-gradient-inner rounded-2xl bg-zinc-900/50 p-12 text-center">
                   <p className="text-slate-400">
-                    {selectedDate
-                      ? `No orders found for ${selectedDate.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', year: 'numeric' })}`
-                      : orderSearchQuery
+                    {orderSearchQuery
                         ? `No orders found matching "${orderSearchQuery}"`
                         : 'No orders found'}
                   </p>
@@ -7085,7 +6951,7 @@ function DiscountCodeForm({ code, onClose, onSuccess, showToast }: {
                 value={formData.code}
                 onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none font-mono"
-                placeholder="e.g., POPDRP20, SUMMER2024"
+                placeholder="e.g., PublicEnemy.com20, SUMMER2024"
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Case-sensitive. Customers must enter this exactly.

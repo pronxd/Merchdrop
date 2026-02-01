@@ -3,10 +3,18 @@
 import { createContext, useContext, useState, useCallback, useEffect, type ReactNode } from "react";
 import type { StorefrontProduct, CartItem } from "@/types/storefront";
 
+export interface FlyAnimation {
+  id: number;
+  startX: number;
+  startY: number;
+  image: string;
+}
+
 interface CartContextType {
   items: CartItem[];
   isOpen: boolean;
   addItem: (product: StorefrontProduct, size?: string) => void;
+  addItemWithAnimation: (product: StorefrontProduct, size?: string, sourceEl?: HTMLElement | null) => void;
   removeItem: (cartKey: string) => void;
   updateQuantity: (cartKey: string, quantity: number) => void;
   clearCart: () => void;
@@ -14,16 +22,23 @@ interface CartContextType {
   closeCart: () => void;
   totalItems: number;
   totalPrice: number;
+  flyAnimations: FlyAnimation[];
+  removeFlyAnimation: (id: number) => void;
+  cartBump: number;
 }
 
 const CartContext = createContext<CartContextType | undefined>(undefined);
 
 const STORAGE_KEY = "popdrp-cart";
 
+let flyIdCounter = 0;
+
 export function StorefrontCartProvider({ children }: { children: ReactNode }) {
   const [items, setItems] = useState<CartItem[]>([]);
   const [isOpen, setIsOpen] = useState(false);
   const [hydrated, setHydrated] = useState(false);
+  const [flyAnimations, setFlyAnimations] = useState<FlyAnimation[]>([]);
+  const [cartBump, setCartBump] = useState(0);
 
   // Load cart from localStorage on mount
   useEffect(() => {
@@ -52,8 +67,6 @@ export function StorefrontCartProvider({ children }: { children: ReactNode }) {
       ? product.sizes.find((s) => s.size === size)?.price ?? product.price
       : product.price;
 
-    const cartKey = size ? `${product.id}_${size}` : product.id;
-
     setItems((prev) => {
       const existing = prev.find(
         (item) => item.id === product.id && item.selectedSize === size
@@ -67,7 +80,31 @@ export function StorefrontCartProvider({ children }: { children: ReactNode }) {
       }
       return [...prev, { ...product, price: sizePrice, selectedSize: size, quantity: 1 }];
     });
-    setIsOpen(true);
+    setCartBump((b) => b + 1);
+  }, []);
+
+  const addItemWithAnimation = useCallback(
+    (product: StorefrontProduct, size?: string, sourceEl?: HTMLElement | null) => {
+      if (product.soldOut) return;
+
+      if (sourceEl) {
+        const rect = sourceEl.getBoundingClientRect();
+        const anim: FlyAnimation = {
+          id: ++flyIdCounter,
+          startX: rect.left + rect.width / 2,
+          startY: rect.top + rect.height / 2,
+          image: product.image,
+        };
+        setFlyAnimations((prev) => [...prev, anim]);
+      }
+
+      addItem(product, size);
+    },
+    [addItem]
+  );
+
+  const removeFlyAnimation = useCallback((id: number) => {
+    setFlyAnimations((prev) => prev.filter((a) => a.id !== id));
   }, []);
 
   const getCartKey = (item: CartItem) =>
@@ -117,6 +154,7 @@ export function StorefrontCartProvider({ children }: { children: ReactNode }) {
         items,
         isOpen,
         addItem,
+        addItemWithAnimation,
         removeItem,
         updateQuantity,
         clearCart,
@@ -124,6 +162,9 @@ export function StorefrontCartProvider({ children }: { children: ReactNode }) {
         closeCart,
         totalItems,
         totalPrice,
+        flyAnimations,
+        removeFlyAnimation,
+        cartBump,
       }}
     >
       {children}
