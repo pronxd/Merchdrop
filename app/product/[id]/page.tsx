@@ -41,6 +41,7 @@ export default function ProductPage() {
   const [notFound, setNotFound] = useState(false);
 
   const [selectedSize, setSelectedSize] = useState<string>("");
+  const [selectedImageIndex, setSelectedImageIndex] = useState(0);
   const [showSizeChart, setShowSizeChart] = useState(false);
   const [openAccordion, setOpenAccordion] = useState<string | null>("details");
   const [showShareMenu, setShowShareMenu] = useState(false);
@@ -165,13 +166,31 @@ export default function ProductPage() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8 lg:gap-12">
           {/* Product Image */}
           <div className="relative">
-            <div className="aspect-[3/4] bg-neutral-900 overflow-hidden">
+            <div className="aspect-[3/4] bg-neutral-900 overflow-hidden relative">
               {/* eslint-disable-next-line @next/next/no-img-element */}
               <img
-                src={productImage}
+                src={product.media?.[selectedImageIndex]?.url || productImage}
                 alt={product.name}
                 className="w-full h-full object-cover"
               />
+
+              {/* Image navigation arrows */}
+              {product.media && product.media.length > 1 && (
+                <>
+                  <button
+                    onClick={() => setSelectedImageIndex((prev) => prev === 0 ? product.media.length - 1 : prev - 1)}
+                    className="absolute left-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 transition-colors"
+                  >
+                    <ChevronLeft className="w-5 h-5" />
+                  </button>
+                  <button
+                    onClick={() => setSelectedImageIndex((prev) => prev === product.media.length - 1 ? 0 : prev + 1)}
+                    className="absolute right-2 top-1/2 -translate-y-1/2 bg-black/50 hover:bg-black/80 text-white p-2 transition-colors"
+                  >
+                    <ChevronRight className="w-5 h-5" />
+                  </button>
+                </>
+              )}
             </div>
 
             {product.soldOut && (
@@ -188,10 +207,12 @@ export default function ProductPage() {
                 {product.media.map((m, i) => (
                   <button
                     key={i}
-                    onClick={() => {
-                      // Scroll to top image or swap - for now just visual
-                    }}
-                    className="w-20 h-20 flex-shrink-0 bg-neutral-900 overflow-hidden border border-white/10 hover:border-white/40 transition-colors"
+                    onClick={() => setSelectedImageIndex(i)}
+                    className={`w-20 h-20 flex-shrink-0 bg-neutral-900 overflow-hidden border transition-colors ${
+                      selectedImageIndex === i
+                        ? "border-white"
+                        : "border-white/10 hover:border-white/40"
+                    }`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
