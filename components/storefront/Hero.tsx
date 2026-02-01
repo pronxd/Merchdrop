@@ -50,12 +50,12 @@ export default function Hero() {
         <div className="absolute inset-0 bg-gradient-to-r from-black/80 via-transparent to-black/80" />
       </div>
 
-      {/* PUBLIC ENEMY Logo */}
+      {/* PUBLIC INFAMY Logo */}
       <h1
         className="relative z-10 text-red-600 font-black uppercase tracking-widest text-5xl sm:text-7xl md:text-8xl lg:text-9xl select-none"
         style={{ filter: `blur(${blurAmount}px)` }}
       >
-        PUBLIC ENEMY
+        PUBLIC INFAMY
       </h1>
 
       {/* Bottom gradient fade */}

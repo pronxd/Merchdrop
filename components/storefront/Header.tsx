@@ -108,7 +108,7 @@ export default function Header() {
                 HOME
               </Link>
               <Link
-                href="#contact"
+                href="/contact"
                 className="text-white text-sm font-medium tracking-wider hover:text-red-500 transition-colors"
               >
                 CONTACT
@@ -134,22 +134,9 @@ export default function Header() {
 
             {/* Logo */}
             <Link href="/" className="absolute left-1/2 transform -translate-x-1/2">
-              <svg
-                viewBox="0 0 200 80"
-                className="h-12 w-auto"
-                fill="currentColor"
-              >
-                <text
-                  x="50%"
-                  y="60%"
-                  dominantBaseline="middle"
-                  textAnchor="middle"
-                  className="fill-white font-bold text-2xl"
-                  style={{ fontFamily: "Oswald, sans-serif" }}
-                >
-                  PUBLICENEMY
-                </text>
-              </svg>
+              <span className="font-barcode text-2xl sm:text-3xl text-white hover:text-red-500 transition-colors relative top-1">
+                PUBLICINFAMY
+              </span>
             </Link>
 
             {/* Right Actions */}

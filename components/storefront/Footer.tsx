@@ -61,7 +61,7 @@ export default function Footer() {
               </li>
               <li>
                 <Link
-                  href="#contact"
+                  href="/contact"
                   className="text-white/60 hover:text-red-500 transition-colors"
                 >
                   CONTACT
@@ -75,36 +75,36 @@ export default function Footer() {
             <h4 className="text-white font-bold mb-4">Support</h4>
             <ul className="space-y-2">
               <li>
-                <a
-                  href="#privacy"
+                <Link
+                  href="/privacy"
                   className="text-white/60 hover:text-red-500 transition-colors"
                 >
                   Privacy Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#refund"
+                <Link
+                  href="/refund"
                   className="text-white/60 hover:text-red-500 transition-colors"
                 >
                   Refund Policy
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#terms"
+                <Link
+                  href="/terms"
                   className="text-white/60 hover:text-red-500 transition-colors"
                 >
                   Terms of Service
-                </a>
+                </Link>
               </li>
               <li>
-                <a
-                  href="#shipping"
+                <Link
+                  href="/shipping"
                   className="text-white/60 hover:text-red-500 transition-colors"
                 >
                   Shipping Information
-                </a>
+                </Link>
               </li>
             </ul>
           </div>
@@ -202,7 +202,7 @@ export default function Footer() {
             <p className="mt-1">
               &copy; 2026,{" "}
               <Link href="/" className="hover:text-white transition-colors">
-                PUBLICENEMY
+                PUBLICINFAMY
               </Link>
               . All Rights Reserved.
             </p>

@@ -401,7 +401,7 @@ export default function DashboardEnhanced() {
         'CONNECTING TO DATABASE...',
         'ESTABLISHING SECURE CONNECTION...',
         '',
-        'PublicEnemy.com ADMIN TERMINAL v2.0.1',
+        'Publicinfamy.com ADMIN TERMINAL v2.0.1',
         'COPYRIGHT 2025 JAMESWEB.DEV',
         '',
         'TERMINAL READY',
@@ -999,10 +999,10 @@ Happy managing!`);
                     <div className="flex items-center gap-3">
                       <img
                         src="https://merch.b-cdn.net/maxresdefault.jpg"
-                        alt="PublicEnemy.com"
+                        alt="Publicinfamy.com"
                         className="h-9 w-9 rounded-xl object-cover"
                       />
-                      <a href="/" target="_blank" rel="noopener noreferrer" className="hidden md:block text-base font-semibold tracking-tight text-white hover:text-white/80 transition">PublicEnemy.com</a>
+                      <a href="/" target="_blank" rel="noopener noreferrer" className="hidden md:block text-base font-semibold tracking-tight text-white hover:text-white/80 transition">Publicinfamy.com</a>
                     </div>
                   </div>
 
@@ -1054,7 +1054,7 @@ Happy managing!`);
                       <div className="hidden md:flex flex-1 items-center justify-between">
                         <div>
                           <p className="text-sm font-medium text-white/90">Admin</p>
-                          <p className="text-xs text-white/60">PublicEnemy.com</p>
+                          <p className="text-xs text-white/60">Publicinfamy.com</p>
                         </div>
                       </div>
                     </div>
@@ -6951,7 +6951,7 @@ function DiscountCodeForm({ code, onClose, onSuccess, showToast }: {
                 value={formData.code}
                 onChange={(e) => setFormData({ ...formData, code: e.target.value })}
                 className="w-full px-4 py-2 border border-gray-300 dark:border-zinc-700 rounded-lg bg-white dark:bg-zinc-800 text-gray-900 dark:text-white focus:ring-2 focus:ring-red-500 focus:outline-none font-mono"
-                placeholder="e.g., PublicEnemy.com20, SUMMER2024"
+                placeholder="e.g., Publicinfamy.com20, SUMMER2024"
               />
               <p className="text-xs text-gray-500 dark:text-gray-400 mt-1">
                 Case-sensitive. Customers must enter this exactly.

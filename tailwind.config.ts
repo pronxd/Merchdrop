@@ -11,6 +11,7 @@ const config: Config = {
       fontFamily: {
         oswald: ['Oswald', 'sans-serif'],
         inter: ['Inter', 'sans-serif'],
+        barcode: ['"Libre Barcode 39"', 'cursive'],
       },
       keyframes: {
         'cart-bump': {
