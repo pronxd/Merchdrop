@@ -1,7 +1,7 @@
 "use client";
 
 import { useState, useEffect, useRef } from "react";
-import { Search, User, ShoppingBag, ChevronDown, X, Loader2 } from "lucide-react";
+import { Search, User, ShoppingBag, ChevronDown, X, Loader2, Menu } from "lucide-react";
 import Link from "next/link";
 import Image from "next/image";
 import { useStorefrontCart } from "@/context/StorefrontCartContext";
@@ -28,6 +28,7 @@ export default function Header() {
   const { totalItems, openCart, cartBump } = useStorefrontCart();
   const [isSearchOpen, setIsSearchOpen] = useState(false);
   const [isOrderLookupOpen, setIsOrderLookupOpen] = useState(false);
+  const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
   const [bump, setBump] = useState(false);
   const badgeRef = useRef<HTMLSpanElement>(null);
 
@@ -43,6 +44,11 @@ export default function Header() {
     const t = setTimeout(() => setBump(false), 400);
     return () => clearTimeout(t);
   }, [cartBump]);
+
+  useEffect(() => {
+    document.body.style.overflow = mobileMenuOpen ? "hidden" : "";
+    return () => { document.body.style.overflow = ""; };
+  }, [mobileMenuOpen]);
 
   const toggleSearch = () => {
     setIsSearchOpen(!isSearchOpen);
@@ -116,25 +122,16 @@ export default function Header() {
             </nav>
 
             {/* Mobile Menu Button */}
-            <button className="md:hidden text-white p-2">
-              <svg
-                className="w-6 h-6"
-                fill="none"
-                stroke="currentColor"
-                viewBox="0 0 24 24"
-              >
-                <path
-                  strokeLinecap="round"
-                  strokeLinejoin="round"
-                  strokeWidth={2}
-                  d="M4 6h16M4 12h16M4 18h16"
-                />
-              </svg>
+            <button
+              onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
+              className="md:hidden text-white hover:text-red-500 transition-colors z-50 relative p-2"
+            >
+              {mobileMenuOpen ? <X size={24} /> : <Menu size={24} />}
             </button>
 
             {/* Logo */}
             <Link href="/" className="absolute left-1/2 transform -translate-x-1/2">
-              <span className="font-barcode text-2xl sm:text-3xl text-white hover:text-red-500 transition-colors relative top-1">
+              <span className="font-barcode text-lg sm:text-3xl text-white hover:text-red-500 transition-colors relative top-1">
                 PUBLICINFAMY
               </span>
             </Link>
@@ -304,6 +301,28 @@ export default function Header() {
           )}
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {mobileMenuOpen && (
+        <div className="md:hidden fixed inset-0 bg-black/95 z-40 animate-fade-in">
+          <nav className="flex flex-col items-center gap-8 pt-40">
+            <Link
+              href="/"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-white hover:text-red-500 transition-all font-oswald font-bold text-2xl uppercase tracking-wider opacity-0 animate-slide-in-delay-1"
+            >
+              Home
+            </Link>
+            <Link
+              href="/contact"
+              onClick={() => setMobileMenuOpen(false)}
+              className="text-white hover:text-red-500 transition-all font-oswald font-bold text-2xl uppercase tracking-wider opacity-0 animate-slide-in-delay-2"
+            >
+              Contact
+            </Link>
+          </nav>
+        </div>
+      )}
     </>
   );
 }
