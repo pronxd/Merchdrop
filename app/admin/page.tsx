@@ -40,11 +40,17 @@ export default function AdminSignIn() {
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-black relative overflow-hidden">
-      {/* UnicornStudio Background */}
+      {/* UnicornStudio Background - Desktop */}
       <div
         ref={bgRef}
         data-us-project="8ZSdWfXPVCRvLBrGwzX1"
-        className="absolute inset-0 w-full h-full"
+        className="absolute inset-0 w-full h-full hidden sm:block"
+        style={{ zIndex: 0 }}
+      />
+      {/* UnicornStudio Background - Mobile */}
+      <div
+        data-us-project="jzdc4Gw3hEw9hQcDmPng"
+        className="absolute inset-0 w-full h-full block sm:hidden"
         style={{ zIndex: 0 }}
       />
       <Script
@@ -53,7 +59,7 @@ export default function AdminSignIn() {
         onLoad={handleUnicornLoad}
       />
       <div className="relative z-10 w-full max-w-sm mx-4 animate-fade-in-up">
-        <div className="bg-neutral-900 border border-neutral-800 rounded-2xl p-6 md:p-8">
+        <div className="bg-white/10 backdrop-blur-xl border border-white/20 rounded-2xl p-6 md:p-8 shadow-[0_8px_32px_rgba(0,0,0,0.4)]">
           {/* Title */}
           <h1 className="font-oswald text-2xl md:text-3xl font-bold text-white text-center uppercase tracking-wider mb-1">
             Welcome Back
@@ -71,7 +77,7 @@ export default function AdminSignIn() {
           {/* Google Sign In Button */}
           <button
             onClick={handleGoogleSignIn}
-            className="w-full flex items-center justify-center gap-3 bg-neutral-800 border border-neutral-700 hover:border-red-500 text-white font-inter text-base font-semibold py-3 px-5 rounded-lg transition-all duration-300 hover:bg-neutral-700 group"
+            className="w-full flex items-center justify-center gap-3 bg-white/10 backdrop-blur-md border border-white/20 hover:border-red-500/50 hover:bg-white/20 text-white font-inter text-base font-semibold py-3 px-5 rounded-lg transition-all duration-300 group"
           >
             {/* Google Icon */}
             <svg className="w-5 h-5" viewBox="0 0 24 24">
@@ -99,9 +105,9 @@ export default function AdminSignIn() {
 
           {/* Divider */}
           <div className="flex items-center gap-4 my-4">
-            <div className="flex-1 h-px bg-neutral-700"></div>
-            <span className="font-inter text-neutral-500 text-xs">or</span>
-            <div className="flex-1 h-px bg-neutral-700"></div>
+            <div className="flex-1 h-px bg-white/20"></div>
+            <span className="font-inter text-white/40 text-xs">or</span>
+            <div className="flex-1 h-px bg-white/20"></div>
           </div>
 
           {/* Email/Password placeholder for future */}
@@ -110,23 +116,23 @@ export default function AdminSignIn() {
               type="email"
               placeholder="Email address"
               disabled
-              className="w-full px-3 py-2 rounded-lg border border-neutral-700 font-inter text-sm bg-neutral-800 text-neutral-400"
+              className="w-full px-3 py-2 rounded-lg border border-white/15 font-inter text-sm bg-white/10 backdrop-blur-sm text-white/40 placeholder-white/30"
             />
             <input
               type="password"
               placeholder="Password"
               disabled
-              className="w-full px-3 py-2 rounded-lg border border-neutral-700 font-inter text-sm bg-neutral-800 text-neutral-400"
+              className="w-full px-3 py-2 rounded-lg border border-white/15 font-inter text-sm bg-white/10 backdrop-blur-sm text-white/40 placeholder-white/30"
             />
             <button
               disabled
-              className="w-full bg-red-600/50 text-white font-oswald py-2 px-4 rounded-lg text-sm uppercase tracking-wider"
+              className="w-full bg-red-600/30 backdrop-blur-sm border border-red-500/20 text-white font-oswald py-2 px-4 rounded-lg text-sm uppercase tracking-wider"
             >
               Sign In
             </button>
           </div>
 
-          <p className="text-center font-inter text-neutral-600 text-xs mt-3">
+          <p className="text-center font-inter text-white/30 text-xs mt-3">
             Email sign-in disabled
           </p>
         </div>
