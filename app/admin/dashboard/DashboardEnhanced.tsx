@@ -1091,7 +1091,7 @@ Happy managing!`);
                   onChange={(e) => setAnalyticsMonth(e.target.value)}
                   className="px-3 py-2 bg-zinc-800 border border-zinc-700 rounded-lg text-white text-sm focus:outline-none focus:border-red-500"
                 />
-                <div className="flex items-center gap-2 bg-zinc-900/80 backdrop-blur-sm rounded-full px-3 py-1.5">
+                <div className="hidden md:flex items-center gap-2 bg-zinc-900/80 backdrop-blur-sm rounded-full px-3 py-1.5">
                   <div className="relative">
                     <div className="w-2 h-2 bg-emerald-500 rounded-full"></div>
                     <div className="absolute inset-0 w-2 h-2 bg-emerald-500 rounded-full animate-ping opacity-75"></div>
